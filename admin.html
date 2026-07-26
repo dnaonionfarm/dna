@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — DnA Onion Farm</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Rajdhani:wght@400;500;600&family=Chakra+Petch:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --panel:#f7f5f3; --panel2:#efebe7; --line:#e2ddd7;
+    --blood:#d81b3f; --gold:#a67c00; --off:#1c1512; --off-dim:#6e6259;
+    --ready:#1f9d55;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--off); font-family:'Rajdhani',sans-serif; }
+  h1,h2{ font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:0.02em; }
+  .wrap{ max-width:920px; margin:0 auto; padding:48px 24px 100px; }
+  .topline{ font-family:'Chakra Petch'; font-size:0.75rem; letter-spacing:0.2em; color:var(--blood); text-transform:uppercase; margin-bottom:10px;}
+  h1{ font-size:2rem; margin:0 0 28px; }
+
+  /* login */
+  #login-screen{ max-width:380px; margin:120px auto; text-align:center; }
+  #login-screen input{
+    width:100%; padding:14px 16px; margin-top:18px; border:1px solid var(--line);
+    font-family:'Chakra Petch'; font-size:1rem; background:var(--panel);
+  }
+  #login-screen button{
+    width:100%; margin-top:14px; padding:14px; background:var(--blood); color:#fff; border:none;
+    font-family:'Oswald'; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; cursor:pointer;
+  }
+  #login-screen button:hover{ background:#ff2f49; }
+  .err{ color:var(--blood); font-family:'Chakra Petch'; font-size:0.85rem; margin-top:12px; min-height:1.2em; }
+
+  /* admin table */
+  #admin-screen{ display:none; }
+  table{ width:100%; border-collapse:collapse; border:1px solid var(--line); }
+  th, td{ padding:12px 14px; border-bottom:1px solid var(--line); text-align:left; font-size:0.92rem; }
+  th{ background:var(--panel2); font-family:'Chakra Petch'; text-transform:uppercase; font-size:0.72rem; letter-spacing:0.08em; color:var(--off-dim); }
+  tr:hover td{ background:var(--panel); }
+  input[type=text]{ width:100%; padding:8px 10px; border:1px solid var(--line); font-family:'Chakra Petch'; font-size:0.9rem; background:#fff; }
+  select{ padding:8px 10px; border:1px solid var(--line); font-family:'Chakra Petch'; font-size:0.9rem; background:#fff; }
+  .pid{ font-family:'Chakra Petch'; font-size:0.78rem; color:var(--off-dim); }
+  .actions{ display:flex; justify-content:space-between; align-items:center; margin-top:24px; }
+  #save-btn{
+    padding:14px 32px; background:var(--blood); color:#fff; border:none; cursor:pointer;
+    font-family:'Oswald'; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; font-size:0.95rem;
+  }
+  #save-btn:hover{ background:#ff2f49; }
+  #save-btn:disabled{ opacity:0.5; cursor:default; }
+  #status-msg{ font-family:'Chakra Petch'; font-size:0.85rem; }
+  #status-msg.ok{ color:var(--ready); }
+  #status-msg.err{ color:var(--blood); }
+  .hint{ font-family:'Chakra Petch'; font-size:0.8rem; color:var(--off-dim); margin-bottom:20px; }
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="topline">DnA Onion Farm</div>
+  <h1>Admin Login</h1>
+  <input type="password" id="password-input" placeholder="Admin password" autofocus>
+  <button id="login-btn">Login</button>
+  <div class="err" id="login-err"></div>
+</div>
+
+<div class="wrap" id="admin-screen">
+  <div class="topline">DnA Onion Farm</div>
+  <h1>Stock &amp; Price Manager</h1>
+  <div class="hint">Edit price and stock status below, then click Save. Changes appear on the live site within a few seconds.</div>
+
+  <table>
+    <thead>
+      <tr><th>Item</th><th>Price</th><th>Stock Status</th></tr>
+    </thead>
+    <tbody id="product-rows"></tbody>
+  </table>
+
+  <div class="actions">
+    <div id="status-msg"></div>
+    <button id="save-btn">Save Changes</button>
+  </div>
+</div>
+
+<script>
+  var ADMIN_PASSWORD_KEY = 'dna_admin_pw';
+  var PRODUCT_LABELS = {
+    'farm-base': 'Farm Base',
+    'farm-manager': 'Farm Manager',
+    'skin-base': 'Skin Base',
+    'skin-set': 'Skin Set',
+    'dd-tile': 'DD Tile',
+    'pilot-main-base': 'Pilot Main Base',
+    'pilot-eden': 'Pilot Eden',
+    'upgrade-b25': 'Upgrade to B25',
+    'topup-game': 'Top Up Game',
+    'wings': 'Wings (Skin)',
+    'halo': 'Halo (Skin)',
+    'teleport': 'Teleport (Skin)',
+    'apc': 'APC (Skin)',
+    'pendant': 'Pendant (Skin)',
+    'satellite': 'Satellite (Skin)',
+    'shield-skin': 'Shield Skin'
+  };
+  var STOCK_OPTIONS = [
+    { level: 'ready', label: 'Ready' },
+    { level: 'limited', label: 'Contact for Availability' },
+    { level: 'out', label: 'Sold Out' }
+  ];
+
+  var loginScreen = document.getElementById('login-screen');
+  var adminScreen = document.getElementById('admin-screen');
+  var passwordInput = document.getElementById('password-input');
+  var loginBtn = document.getElementById('login-btn');
+  var loginErr = document.getElementById('login-err');
+  var rowsBody = document.getElementById('product-rows');
+  var saveBtn = document.getElementById('save-btn');
+  var statusMsg = document.getElementById('status-msg');
+
+  var currentProducts = [];
+
+  function showAdmin(){
+    loginScreen.style.display = 'none';
+    adminScreen.style.display = 'block';
+    loadProducts();
+  }
+
+  function tryLogin(pw){
+    loginErr.textContent = '';
+    fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw })
+    }).then(function(r){
+      if (r.ok) {
+        sessionStorage.setItem(ADMIN_PASSWORD_KEY, pw);
+        showAdmin();
+      } else {
+        loginErr.textContent = 'Wrong password.';
+      }
+    }).catch(function(){
+      loginErr.textContent = 'Could not reach server. Is the KV/API set up yet?';
+    });
+  }
+
+  loginBtn.addEventListener('click', function(){ tryLogin(passwordInput.value); });
+  passwordInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') tryLogin(passwordInput.value); });
+
+  var savedPw = sessionStorage.getItem(ADMIN_PASSWORD_KEY);
+  if (savedPw) tryLogin(savedPw);
+
+  function loadProducts(){
+    fetch('/api/products').then(function(r){ return r.json(); }).then(function(data){
+      currentProducts = data.products || [];
+      renderRows();
+    }).catch(function(){
+      statusMsg.textContent = 'Failed to load products.';
+      statusMsg.className = 'err';
+    });
+  }
+
+  function renderRows(){
+    rowsBody.innerHTML = '';
+    currentProducts.forEach(function(p, idx){
+      var tr = document.createElement('tr');
+
+      var tdName = document.createElement('td');
+      tdName.innerHTML = (PRODUCT_LABELS[p.id] || p.id) + '<div class="pid">' + p.id + '</div>';
+
+      var tdPrice = document.createElement('td');
+      var priceInput = document.createElement('input');
+      priceInput.type = 'text';
+      priceInput.value = p.price || '';
+      priceInput.addEventListener('input', function(){ currentProducts[idx].price = priceInput.value; });
+      tdPrice.appendChild(priceInput);
+
+      var tdStock = document.createElement('td');
+      var select = document.createElement('select');
+      STOCK_OPTIONS.forEach(function(opt){
+        var o = document.createElement('option');
+        o.value = opt.level;
+        o.textContent = opt.label;
+        if (opt.level === p.stockLevel) o.selected = true;
+        select.appendChild(o);
+      });
+      select.addEventListener('change', function(){
+        var chosen = STOCK_OPTIONS.find(function(o){ return o.level === select.value; });
+        currentProducts[idx].stockLevel = chosen.level;
+        currentProducts[idx].stockLabel = chosen.label;
+      });
+      tdStock.appendChild(select);
+
+      tr.appendChild(tdName);
+      tr.appendChild(tdPrice);
+      tr.appendChild(tdStock);
+      rowsBody.appendChild(tr);
+    });
+  }
+
+  saveBtn.addEventListener('click', function(){
+    saveBtn.disabled = true;
+    statusMsg.textContent = 'Saving...';
+    statusMsg.className = '';
+    fetch('/api/products', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-password': sessionStorage.getItem(ADMIN_PASSWORD_KEY) || ''
+      },
+      body: JSON.stringify({ products: currentProducts })
+    }).then(function(r){
+      saveBtn.disabled = false;
+      if (r.ok) {
+        statusMsg.textContent = 'Saved! Live site updated.';
+        statusMsg.className = 'ok';
+      } else {
+        statusMsg.textContent = 'Save failed — session may have expired, try logging in again.';
+        statusMsg.className = 'err';
+      }
+    }).catch(function(){
+      saveBtn.disabled = false;
+      statusMsg.textContent = 'Network error while saving.';
+      statusMsg.className = 'err';
+    });
+  });
+</script>
+
+</body>
+</html>
