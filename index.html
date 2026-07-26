@@ -243,38 +243,6 @@
   @media (max-width:600px){ .process-grid{ grid-template-columns:1fr; } .process-card img{ height:200px; } }
 
   .channel-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:32px; }
-
-  /* ---------- work gallery ---------- */
-  .gallery-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
-  .gallery-item{
-    position:relative; overflow:hidden; border:1px solid var(--line); background:var(--bg-panel);
-    aspect-ratio:4/3; cursor:pointer;
-  }
-  .gallery-item img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s; }
-  .gallery-item:hover img{ transform:scale(1.06); }
-  .gallery-item .tag{
-    position:absolute; left:8px; bottom:8px; background:rgba(0,0,0,0.55); color:#fff;
-    font-family:'Chakra Petch'; font-size:0.65rem; letter-spacing:0.05em; text-transform:uppercase;
-    padding:4px 8px;
-  }
-  @media (max-width:900px){ .gallery-grid{ grid-template-columns:repeat(3,1fr); } }
-  @media (max-width:600px){ .gallery-grid{ grid-template-columns:repeat(2,1fr); } }
-
-  .lightbox{
-    display:none; position:fixed; inset:0; z-index:100; background:rgba(10,9,8,0.92);
-    align-items:center; justify-content:center; padding:40px;
-  }
-  .lightbox.open{ display:flex; }
-  .lightbox img{ max-width:min(90vw, 900px); max-height:85vh; box-shadow:0 0 40px rgba(0,0,0,0.5); }
-  .lightbox-close{
-    position:absolute; top:24px; right:32px; color:#fff; font-family:'Oswald'; font-size:1rem;
-    letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; border:1px solid rgba(255,255,255,0.4); padding:8px 16px;
-  }
-  .lightbox-nav{
-    position:absolute; top:50%; transform:translateY(-50%); color:#fff; font-size:2rem; cursor:pointer;
-    padding:10px 16px; user-select:none;
-  }
-  .lightbox-prev{ left:16px; } .lightbox-next{ right:16px; }
   .channel-card{
     background:var(--bg-panel); padding:28px 24px; display:flex; flex-direction:column; gap:8px;
     cursor:pointer; transition:background .2s;
@@ -350,7 +318,6 @@
   <div class="nav-links">
     <a href="#services">Services</a>
     <a href="#skin">Skin</a>
-    <a href="#gallery">Gallery</a>
     <a href="#howto">How to Order</a>
     <a href="#process">Process</a>
     <a href="#testimonials">Testimonials</a>
@@ -583,92 +550,6 @@
   </div>
 </section>
 
-<section id="gallery">
-  <div class="section-head">
-    <span class="eyebrow">Proof of Work</span>
-    <h2>Farm &amp; DD Tile in Progress</h2>
-    <p>Real screenshots from our multi-account farm management and DD Tile service — this is what's running behind every order.</p>
-  </div>
-
-  <div class="gallery-grid">
-    <div class="gallery-item" onclick="openLightbox(0)">
-      <img src="gallery/work-01.jpg" alt="Farm & DD Tile process 1" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(1)">
-      <img src="gallery/work-02.jpg" alt="Farm & DD Tile process 2" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(2)">
-      <img src="gallery/work-03.jpg" alt="Farm & DD Tile process 3" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(3)">
-      <img src="gallery/work-04.jpg" alt="Farm & DD Tile process 4" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(4)">
-      <img src="gallery/work-05.jpg" alt="Farm & DD Tile process 5" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(5)">
-      <img src="gallery/work-06.jpg" alt="Farm & DD Tile process 6" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(6)">
-      <img src="gallery/work-07.jpg" alt="Farm & DD Tile process 7" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(7)">
-      <img src="gallery/work-08.jpg" alt="Farm & DD Tile process 8" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(8)">
-      <img src="gallery/work-09.jpg" alt="Farm & DD Tile process 9" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(9)">
-      <img src="gallery/work-10.jpg" alt="Farm & DD Tile process 10" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(10)">
-      <img src="gallery/work-11.jpg" alt="Farm & DD Tile process 11" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(11)">
-      <img src="gallery/work-12.jpg" alt="Farm & DD Tile process 12" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(12)">
-      <img src="gallery/work-13.jpg" alt="Farm & DD Tile process 13" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(13)">
-      <img src="gallery/work-14.jpg" alt="Farm & DD Tile process 14" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(14)">
-      <img src="gallery/work-15.jpg" alt="Farm & DD Tile process 15" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(15)">
-      <img src="gallery/work-16.jpg" alt="Farm & DD Tile process 16" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-    <div class="gallery-item" onclick="openLightbox(16)">
-      <img src="gallery/work-17.jpg" alt="Farm & DD Tile process 17" loading="lazy">
-      <div class="tag">Live Process</div>
-    </div>
-  </div>
-</section>
-
-<div class="lightbox" id="lightbox">
-  <div class="lightbox-close" onclick="closeLightbox()">Close ✕</div>
-  <div class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)">‹</div>
-  <img id="lightbox-img" src="" alt="Work process">
-  <div class="lightbox-nav lightbox-next" onclick="navLightbox(1)">›</div>
-</div>
-
 <section id="testimonials">
   <div class="section-head">
     <span class="eyebrow">Testimonials</span>
@@ -769,33 +650,6 @@
   <div>© 2026 DnA Onion Farm. All rights reserved.</div>
   <div>Last Shelter Survival Services — Not affiliated with the game publisher.</div>
 </footer>
-
-<script>
-  var galleryTotal = 17;
-  var galleryIndex = 0;
-  function galSrc(i){ return 'gallery/work-' + String(i + 1).padStart(2, '0') + '.jpg'; }
-  function openLightbox(i){
-    galleryIndex = i;
-    document.getElementById('lightbox-img').src = galSrc(i);
-    document.getElementById('lightbox').classList.add('open');
-  }
-  function closeLightbox(){
-    document.getElementById('lightbox').classList.remove('open');
-  }
-  function navLightbox(dir){
-    galleryIndex = (galleryIndex + dir + galleryTotal) % galleryTotal;
-    document.getElementById('lightbox-img').src = galSrc(galleryIndex);
-  }
-  document.getElementById('lightbox').addEventListener('click', function(e){
-    if (e.target.id === 'lightbox') closeLightbox();
-  });
-  document.addEventListener('keydown', function(e){
-    if (!document.getElementById('lightbox').classList.contains('open')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowRight') navLightbox(1);
-    if (e.key === 'ArrowLeft') navLightbox(-1);
-  });
-</script>
 
 <script>
   // Load live price & stock data from the admin-managed store, if available.
