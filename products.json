@@ -2,7 +2,7 @@
   "products": [
     { "id": "farm-base", "price": "$4", "stockLevel": "ready", "stockLabel": "Ready" },
     { "id": "farm-manager", "price": "$3.5", "stockLevel": "ready", "stockLabel": "Ready" },
-    { "id": "skin-base", "price": "$290", "stockLevel": "limited", "stockLabel": "Contact for Availability" },
+    { "id": "skin-base", "price": "$start $45-$290 ", "stockLevel": "limited", "stockLabel": "Contact for Availability" },
     { "id": "skin-set", "price": "$550", "stockLevel": "limited", "stockLabel": "Contact for Availability" },
     { "id": "dd-tile", "price": "$3", "stockLevel": "ready", "stockLabel": "Ready" },
     { "id": "pilot-main-base", "price": "$100", "stockLevel": "ready", "stockLabel": "Ready" },
