@@ -233,14 +233,56 @@
   @media (max-width:600px){ .skin-grid{ grid-template-columns:1fr; } }
 
   /* ---------- contact channels ---------- */
+  /* ---------- process gallery ---------- */
+  .process-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .process-card{ background:var(--bg-panel); overflow:hidden; }
+  .process-card img{ display:block; width:100%; height:220px; object-fit:cover; filter:saturate(1.05); transition:transform .3s; }
+  .process-card:hover img{ transform:scale(1.04); }
+  .process-cap{ padding:14px 16px; font-family:'Chakra Petch'; font-size:0.8rem; color:var(--off-dim); border-top:1px solid var(--line); }
+  @media (max-width:900px){ .process-grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:600px){ .process-grid{ grid-template-columns:1fr; } .process-card img{ height:200px; } }
+
   .channel-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:32px; }
+
+  /* ---------- work gallery ---------- */
+  .gallery-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .gallery-item{
+    position:relative; overflow:hidden; border:1px solid var(--line); background:var(--bg-panel);
+    aspect-ratio:4/3; cursor:pointer;
+  }
+  .gallery-item img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s; }
+  .gallery-item:hover img{ transform:scale(1.06); }
+  .gallery-item .tag{
+    position:absolute; left:8px; bottom:8px; background:rgba(0,0,0,0.55); color:#fff;
+    font-family:'Chakra Petch'; font-size:0.65rem; letter-spacing:0.05em; text-transform:uppercase;
+    padding:4px 8px;
+  }
+  @media (max-width:900px){ .gallery-grid{ grid-template-columns:repeat(3,1fr); } }
+  @media (max-width:600px){ .gallery-grid{ grid-template-columns:repeat(2,1fr); } }
+
+  .lightbox{
+    display:none; position:fixed; inset:0; z-index:100; background:rgba(10,9,8,0.92);
+    align-items:center; justify-content:center; padding:40px;
+  }
+  .lightbox.open{ display:flex; }
+  .lightbox img{ max-width:min(90vw, 900px); max-height:85vh; box-shadow:0 0 40px rgba(0,0,0,0.5); }
+  .lightbox-close{
+    position:absolute; top:24px; right:32px; color:#fff; font-family:'Oswald'; font-size:1rem;
+    letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; border:1px solid rgba(255,255,255,0.4); padding:8px 16px;
+  }
+  .lightbox-nav{
+    position:absolute; top:50%; transform:translateY(-50%); color:#fff; font-size:2rem; cursor:pointer;
+    padding:10px 16px; user-select:none;
+  }
+  .lightbox-prev{ left:16px; } .lightbox-next{ right:16px; }
   .channel-card{
     background:var(--bg-panel); padding:28px 24px; display:flex; flex-direction:column; gap:8px;
     cursor:pointer; transition:background .2s;
   }
   .channel-card:hover{ background:var(--bg-panel-2); }
   .channel-card.primary{ background:var(--bg-panel-2); }
-  .ch-icon{ font-size:1.4rem; }
+  .ch-icon{ display:flex; align-items:center; }
+  .ch-icon svg{ display:block; }
   .ch-name{ font-family:'Oswald'; font-weight:600; font-size:1.05rem; color:var(--off); text-transform:uppercase; letter-spacing:0.03em; }
   .ch-value{ font-family:'Chakra Petch'; font-size:0.88rem; color:var(--off-dim); word-break:break-word; }
   .ch-cta{ margin-top:auto; font-family:'Oswald'; font-size:0.75rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--blood); padding-top:8px; }
@@ -308,7 +350,9 @@
   <div class="nav-links">
     <a href="#services">Services</a>
     <a href="#skin">Skin</a>
+    <a href="#gallery">Gallery</a>
     <a href="#howto">How to Order</a>
+    <a href="#process">Process</a>
     <a href="#testimonials">Testimonials</a>
     <a href="#contact">Contact</a>
   </div>
@@ -504,6 +548,127 @@
   </div>
 </section>
 
+<section id="process">
+  <div class="section-head">
+    <span class="eyebrow">Live Process</span>
+    <h2>Farming &amp; DD Tile in Action</h2>
+    <p>Real screenshots from our multi-base farming and DD Tile operations — so you can see exactly how your order gets handled.</p>
+  </div>
+
+  <div class="process-grid">
+    <div class="process-card">
+      <img src="assets/process/proses-1.jpg" alt="Multi-base farm management overview" loading="lazy">
+      <div class="process-cap">Multi-base farm management overview</div>
+    </div>
+    <div class="process-card">
+      <img src="assets/process/proses-2.jpg" alt="Resource and item distribution across bases" loading="lazy">
+      <div class="process-cap">Resource &amp; item distribution across bases</div>
+    </div>
+    <div class="process-card">
+      <img src="assets/process/proses-3.jpg" alt="DD Tile location scouting on the map" loading="lazy">
+      <div class="process-cap">DD Tile location scouting</div>
+    </div>
+    <div class="process-card">
+      <img src="assets/process/proses-4.jpg" alt="Active farming session across multiple accounts" loading="lazy">
+      <div class="process-cap">Active farming session, multi-account</div>
+    </div>
+    <div class="process-card">
+      <img src="assets/process/proses-5.jpg" alt="DD Tile route navigation" loading="lazy">
+      <div class="process-cap">DD Tile route navigation</div>
+    </div>
+    <div class="process-card">
+      <img src="assets/process/proses-6.jpg" alt="Live base monitoring during a farming run" loading="lazy">
+      <div class="process-cap">Live base monitoring during a run</div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="section-head">
+    <span class="eyebrow">Proof of Work</span>
+    <h2>Farm &amp; DD Tile in Progress</h2>
+    <p>Real screenshots from our multi-account farm management and DD Tile service — this is what's running behind every order.</p>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="gallery-item" onclick="openLightbox(0)">
+      <img src="gallery/work-01.jpg" alt="Farm & DD Tile process 1" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(1)">
+      <img src="gallery/work-02.jpg" alt="Farm & DD Tile process 2" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(2)">
+      <img src="gallery/work-03.jpg" alt="Farm & DD Tile process 3" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(3)">
+      <img src="gallery/work-04.jpg" alt="Farm & DD Tile process 4" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(4)">
+      <img src="gallery/work-05.jpg" alt="Farm & DD Tile process 5" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(5)">
+      <img src="gallery/work-06.jpg" alt="Farm & DD Tile process 6" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(6)">
+      <img src="gallery/work-07.jpg" alt="Farm & DD Tile process 7" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(7)">
+      <img src="gallery/work-08.jpg" alt="Farm & DD Tile process 8" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(8)">
+      <img src="gallery/work-09.jpg" alt="Farm & DD Tile process 9" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(9)">
+      <img src="gallery/work-10.jpg" alt="Farm & DD Tile process 10" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(10)">
+      <img src="gallery/work-11.jpg" alt="Farm & DD Tile process 11" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(11)">
+      <img src="gallery/work-12.jpg" alt="Farm & DD Tile process 12" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(12)">
+      <img src="gallery/work-13.jpg" alt="Farm & DD Tile process 13" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(13)">
+      <img src="gallery/work-14.jpg" alt="Farm & DD Tile process 14" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(14)">
+      <img src="gallery/work-15.jpg" alt="Farm & DD Tile process 15" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(15)">
+      <img src="gallery/work-16.jpg" alt="Farm & DD Tile process 16" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox(16)">
+      <img src="gallery/work-17.jpg" alt="Farm & DD Tile process 17" loading="lazy">
+      <div class="tag">Live Process</div>
+    </div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-close" onclick="closeLightbox()">Close ✕</div>
+  <div class="lightbox-nav lightbox-prev" onclick="navLightbox(-1)">‹</div>
+  <img id="lightbox-img" src="" alt="Work process">
+  <div class="lightbox-nav lightbox-next" onclick="navLightbox(1)">›</div>
+</div>
+
 <section id="testimonials">
   <div class="section-head">
     <span class="eyebrow">Testimonials</span>
@@ -539,42 +704,42 @@
 
   <div class="channel-grid">
     <a class="channel-card primary" href="https://wa.me/6287885931938" target="_blank" rel="noopener">
-      <div class="ch-icon">🟢</div>
+      <div class="ch-icon"><svg viewBox="0 0 32 32" width="30" height="30"><circle cx="16" cy="16" r="16" fill="#25D366"/><path fill="#fff" d="M16 7.5c-4.7 0-8.5 3.8-8.5 8.5 0 1.5.4 2.9 1.1 4.2L7.5 24.5l4.5-1.1c1.2.6 2.6 1 4 1 4.7 0 8.5-3.8 8.5-8.5S20.7 7.5 16 7.5zm0 15.4c-1.3 0-2.5-.3-3.6-1l-.3-.1-2.7.7.7-2.6-.2-.3c-.7-1.1-1.1-2.4-1.1-3.7 0-3.9 3.2-7.1 7.1-7.1s7.1 3.2 7.1 7.1-3.1 7-7 7zm3.9-5.3c-.2-.1-1.3-.6-1.5-.7-.2-.1-.3-.1-.5.1-.1.2-.5.7-.6.8-.1.1-.2.1-.4 0-.2-.1-.9-.3-1.7-1-.6-.6-1.1-1.3-1.2-1.5-.1-.2 0-.3.1-.4.1-.1.2-.2.3-.4.1-.1.2-.2.2-.4.1-.1 0-.3 0-.4-.1-.1-.5-1.2-.7-1.7-.2-.4-.4-.4-.5-.4h-.4c-.1 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.1 1.6 2.5 3.9 3.4.5.2 1 .4 1.3.5.5.2 1 .1 1.4.1.4-.1 1.3-.5 1.5-1 .2-.5.2-.9.1-1z"/></svg></div>
       <div class="ch-name">WhatsApp</div>
       <div class="ch-value">+62 878-8593-1938</div>
       <div class="ch-cta">Chat Now →</div>
     </a>
 
     <a class="channel-card" href="viber://chat?number=%2B6287885931938" >
-      <div class="ch-icon">🟣</div>
+      <div class="ch-icon"><svg viewBox="0 0 32 32" width="30" height="30"><circle cx="16" cy="16" r="16" fill="#7360F2"/><path fill="#fff" d="M16.9 20.7s.7.1 1.1-.4l.7-.9c.4-.5 1.3-.8 2.1-.3.4.2.9.6 1.5 1 .6.4 1.9 1.3 1.9 1.3.3.3.4.7.1 1.2-.3.5-.9 1.2-1.6 1.6-.6.4-1.3.6-1.9.6-.2 0-.5 0-.7-.1-1-.3-2.7-.9-5.1-2.9-2-1.7-3.4-3.7-3.9-4.4-.4-.6-1.2-1.9-1.2-3.2 0-1.5.8-2.3 1.1-2.6.3-.3.7-.4 1-.4h.7c.2 0 .5 0 .7.5.3.6 1 2 1.1 2.2.1.2.2.4.1.6-.1.2-.1.3-.3.5-.1.2-.3.4-.5.6-.2.2-.4.4-.2.7.2.4 1 1.6 2.1 2.6 1.5 1.3 2.7 1.7 3.1 1.9zm-1-15.7c-6.1 0-11 4.9-11 11 0 2.1.6 4.1 1.6 5.8L6 27l5.4-1.4c1.6.9 3.5 1.4 5.4 1.4 6.1 0 11-4.9 11-11s-4.8-11-10.9-11z"/></svg></div>
       <div class="ch-name">Viber</div>
       <div class="ch-value">+62 878-8593-1938</div>
       <div class="ch-cta">Open Viber →</div>
     </a>
 
     <a class="channel-card" href="https://line.me/ti/p/A25_mg12HK" target="_blank" rel="noopener">
-      <div class="ch-icon">🟩</div>
+      <div class="ch-icon"><svg viewBox="0 0 32 32" width="30" height="30"><rect width="32" height="32" rx="7" fill="#06C755"/><path fill="#fff" d="M16 6.5c-5.5 0-10 3.7-10 8.3 0 4.1 3.6 7.6 8.4 8.2.3.1.8.2.9.5.1.3 0 .7 0 1l-.1.9c0 .3-.2 1.1 1 .6s6.3-3.7 8.6-6.4c1.6-1.7 2.3-3.5 2.3-5.4.1-4.9-4.4-8.7-11.1-8.7zm-5.9 10.6h-2c-.3 0-.5-.2-.5-.5v-4.1c0-.3.2-.5.5-.5s.5.2.5.5v3.6h1.5c.3 0 .5.2.5.5s-.2.5-.5.5zm2.4-.5c0 .3-.2.5-.5.5s-.5-.2-.5-.5v-4.1c0-.3.2-.5.5-.5s.5.2.5.5v4.1zm5-.1c0 .2-.1.4-.4.5h-.2c-.2 0-.3-.1-.4-.2l-1.9-2.6v2.4c0 .3-.2.5-.5.5s-.5-.2-.5-.5v-4.1c0-.2.1-.4.4-.5h.1c.2 0 .3.1.4.2l1.9 2.6v-2.4c0-.3.2-.5.5-.5s.5.2.5.5v4.1zm3.6-2.6c.3 0 .5.2.5.5s-.2.5-.5.5h-1.4v.8h1.4c.3 0 .5.2.5.5s-.2.5-.5.5h-1.9c-.3 0-.5-.2-.5-.5v-4.1c0-.3.2-.5.5-.5h1.9c.3 0 .5.2.5.5s-.2.5-.5.5h-1.4v.8h1.4z"/></svg></div>
       <div class="ch-name">Line</div>
       <div class="ch-value">line.me/ti/p/A25_mg12HK</div>
       <div class="ch-cta">Add on Line →</div>
     </a>
 
     <div class="channel-card copyable" data-copy="dnaonionfarm">
-      <div class="ch-icon">🔵</div>
+      <div class="ch-icon"><svg viewBox="0 0 32 32" width="30" height="30"><circle cx="16" cy="16" r="16" fill="#5865F2"/><path fill="#fff" d="M23 10.5c-1.1-.5-2.3-.9-3.5-1.1-.2.3-.4.7-.5 1-1.3-.2-2.6-.2-3.9 0-.1-.3-.3-.7-.5-1-1.2.2-2.4.6-3.5 1.1-2.2 3.3-2.8 6.6-2.5 9.8 1.5 1.1 2.9 1.7 4.3 2.2.3-.5.7-1 .9-1.5-.5-.2-1-.4-1.5-.7.1-.1.2-.2.3-.3 2.8 1.3 5.9 1.3 8.7 0l.3.3c-.5.3-1 .5-1.5.7.3.5.6 1 .9 1.5 1.4-.4 2.8-1.1 4.3-2.2.4-3.7-.6-7-2.4-9.8zM13.7 18.6c-.8 0-1.5-.8-1.5-1.7s.7-1.7 1.5-1.7 1.5.8 1.5 1.7-.7 1.7-1.5 1.7zm4.6 0c-.8 0-1.5-.8-1.5-1.7s.7-1.7 1.5-1.7 1.5.8 1.5 1.7-.6 1.7-1.5 1.7z"/></svg></div>
       <div class="ch-name">Discord</div>
       <div class="ch-value">dnaonionfarm</div>
       <div class="ch-cta copy-btn">Tap to Copy ID</div>
     </div>
 
     <div class="channel-card copyable" data-copy="dnaonionfarm">
-      <div class="ch-icon">⬛</div>
+      <div class="ch-icon"><svg viewBox="0 0 32 32" width="30" height="30"><circle cx="16" cy="16" r="16" fill="#07C160"/><path fill="#fff" d="M12.3 8.9c-4 0-7.3 2.7-7.3 6.1 0 1.9 1 3.6 2.7 4.8l-.7 2.1 2.4-1.2c.9.2 1.7.4 2.6.4h.2c-.2-.6-.3-1.2-.3-1.8 0-3.4 3.3-6.1 7.4-6.1h.2c-.6-2.5-3.5-4.3-7.2-4.3zm-2.6 3.3c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9zm5.1 0c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9zm4.8 2.2c-3.5 0-6.3 2.4-6.3 5.3s2.8 5.3 6.3 5.3c.7 0 1.4-.1 2.1-.3l2 1.1-.5-1.8c1.4-1 2.3-2.5 2.3-4.2 0-3-2.8-5.4-6.3-5.4zm-2.3 4.6c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7zm4.6 0c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7z"/></svg></div>
       <div class="ch-name">WeChat</div>
       <div class="ch-value">dnaonionfarm</div>
       <div class="ch-cta copy-btn">Tap to Copy ID</div>
     </div>
 
     <a class="channel-card" href="https://t.me/dnaonf" target="_blank" rel="noopener">
-      <div class="ch-icon">🔷</div>
+      <div class="ch-icon"><svg viewBox="0 0 32 32" width="30" height="30"><circle cx="16" cy="16" r="16" fill="#26A5E4"/><path fill="#fff" d="M23.8 10.2 21.4 22c-.2.8-.7 1-1.4.6l-3.8-2.8-1.8 1.7c-.2.2-.4.4-.8.4l.3-3.9 7.2-6.5c.3-.3-.1-.4-.5-.2l-8.9 5.6-3.8-1.2c-.8-.3-.8-.8.2-1.2l14.9-5.7c.7-.3 1.3.2 1 1.2z"/></svg></div>
       <div class="ch-name">Telegram</div>
       <div class="ch-value">@dnaonf</div>
       <div class="ch-cta">Open Telegram →</div>
@@ -606,11 +771,38 @@
 </footer>
 
 <script>
+  var galleryTotal = 17;
+  var galleryIndex = 0;
+  function galSrc(i){ return 'gallery/work-' + String(i + 1).padStart(2, '0') + '.jpg'; }
+  function openLightbox(i){
+    galleryIndex = i;
+    document.getElementById('lightbox-img').src = galSrc(i);
+    document.getElementById('lightbox').classList.add('open');
+  }
+  function closeLightbox(){
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  function navLightbox(dir){
+    galleryIndex = (galleryIndex + dir + galleryTotal) % galleryTotal;
+    document.getElementById('lightbox-img').src = galSrc(galleryIndex);
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e){
+    if (e.target.id === 'lightbox') closeLightbox();
+  });
+  document.addEventListener('keydown', function(e){
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') navLightbox(1);
+    if (e.key === 'ArrowLeft') navLightbox(-1);
+  });
+</script>
+
+<script>
   // Load live price & stock data from the admin-managed store, if available.
   // Falls back silently to the static values already in the HTML if the API
   // isn't reachable (e.g. viewing the file locally without Cloudflare Functions).
   (function(){
-    fetch('/api/products').then(function(r){
+    fetch('/products.json?t=' + Date.now()).then(function(r){
       if (!r.ok) throw new Error('no data');
       return r.json();
     }).then(function(data){
