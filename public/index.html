@@ -76,6 +76,32 @@
     mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 80%);
   }
 
+  /* ---------- ambient orbs (pure CSS, no assets) ---------- */
+  .ambient-orbs{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+  .ambient-orbs span{
+    position:absolute; border-radius:50%; filter:blur(60px); opacity:0.16;
+    animation:orbDrift 22s ease-in-out infinite;
+  }
+  .ambient-orbs span:nth-child(1){
+    width:340px; height:340px; background:var(--blood); top:-60px; left:8%;
+    animation-duration:24s;
+  }
+  .ambient-orbs span:nth-child(2){
+    width:280px; height:280px; background:var(--gold); top:35vh; right:6%;
+    animation-duration:28s; animation-delay:-6s;
+  }
+  .ambient-orbs span:nth-child(3){
+    width:300px; height:300px; background:var(--ember); bottom:-40px; left:35%;
+    animation-duration:26s; animation-delay:-12s;
+  }
+  @keyframes orbDrift{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    33%{ transform:translate(30px,-40px) scale(1.1); }
+    66%{ transform:translate(-25px,25px) scale(0.95); }
+  }
+  @media (prefers-reduced-motion:reduce){ .ambient-orbs span{ animation:none; } }
+  @media (max-width:700px){ .ambient-orbs{ display:none; } }
+
   /* ---------- floating contact button ---------- */
   .floating-contact{
     position:fixed; right:22px; bottom:22px; z-index:80;
@@ -186,13 +212,38 @@
     line-height:0.95;
     color:var(--off);
   }
-  .hero h1 .accent{ color:var(--blood); text-shadow:0 0 24px rgba(216,27,63,0.28); }
+  .hero h1 .accent{
+    background:linear-gradient(100deg, var(--blood) 20%, var(--ember) 40%, var(--gold) 50%, var(--blood) 70%);
+    background-size:250% auto;
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:var(--blood);
+    filter:drop-shadow(0 0 24px rgba(216,27,63,0.25));
+    animation:shimmerText 6s linear infinite;
+  }
+  @keyframes shimmerText{ to{ background-position:250% center; } }
+  @media (prefers-reduced-motion:reduce){ .hero h1 .accent{ animation:none; } }
   .hero-sub{
     max-width:560px; margin-top:24px; color:var(--off-dim);
     font-size:1.08rem; line-height:1.6;
   }
+  .price-anchor{
+    display:inline-flex; align-items:center; gap:10px; margin-top:26px;
+    background:var(--bg-panel); border:1px solid var(--line); padding:10px 18px 10px 14px;
+    font-family:'Chakra Petch'; font-size:0.9rem; color:var(--off); text-decoration:none;
+    transition:all .2s;
+  }
+  .price-anchor:hover{ border-color:var(--gold); background:var(--bg-panel-2); transform:translateX(2px); }
+  .price-anchor b{ color:var(--gold); font-family:'Oswald'; }
+  .price-anchor-dot{ width:7px; height:7px; border-radius:50%; background:var(--stock-ready); box-shadow:0 0 8px var(--stock-ready); flex-shrink:0; }
+  .price-anchor-arrow{ color:var(--blood); transition:transform .2s; }
+  .price-anchor:hover .price-anchor-arrow{ transform:translateX(3px); }
+
   .hero-actions{ display:flex; gap:16px; margin-top:40px; flex-wrap:wrap; }
+
+  /* ---------- scroll reveal ---------- */
+  .reveal-init{ opacity:0; transform:translateY(22px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal-in{ opacity:1; transform:translateY(0); }
   .btn-primary{
+    position:relative; overflow:hidden;
     background:var(--blood); color:#fff; padding:16px 30px;
     font-family:'Oswald'; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; font-size:0.95rem;
     display:inline-flex; align-items:center; gap:10px;
@@ -200,6 +251,13 @@
     transition:all .2s;
     clip-path:polygon(0 0, 100% 0, 100% 70%, 94% 100%, 0 100%);
   }
+  .btn-primary::after{
+    content:''; position:absolute; top:0; left:-60%; width:40%; height:100%;
+    background:linear-gradient(115deg, transparent, rgba(255,255,255,0.35), transparent);
+    animation:btnSweep 3.2s ease-in-out infinite;
+  }
+  @keyframes btnSweep{ 0%{ left:-60%; } 55%,100%{ left:130%; } }
+  @media (prefers-reduced-motion:reduce){ .btn-primary::after{ animation:none; } }
   .btn-primary:hover{ background:#ff2f49; box-shadow:0 0 18px rgba(216,27,63,0.3); }
   .btn-ghost{
     padding:16px 26px; border:1px solid var(--line);
@@ -232,11 +290,11 @@
   .roster-row{
     display:grid; grid-template-columns:1.4fr 0.9fr 0.9fr 1.2fr;
     align-items:center; padding:20px 26px; border-bottom:1px solid var(--line);
-    transition:background .2s;
+    transition:background .2s, transform .2s, box-shadow .2s;
     gap:12px;
   }
   .roster-row:last-child{ border-bottom:none; }
-  .roster-row:hover{ background:var(--bg-panel-2); }
+  .roster-row:hover{ background:var(--bg-panel-2); transform:translateX(2px); box-shadow:-3px 0 0 var(--blood); }
   .roster-row.head{
     font-family:'Chakra Petch'; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase;
     color:var(--off-dim); padding:14px 26px; background:var(--bg-panel-2);
@@ -244,6 +302,11 @@
   .r-name{ display:flex; flex-direction:column; }
   .r-name .n{ font-family:'Oswald'; font-weight:600; font-size:1.05rem; color:var(--off); letter-spacing:0.02em;}
   .r-name .d{ font-size:0.8rem; color:var(--off-dim); margin-top:2px; }
+  .value-tag{
+    display:inline-block; margin-left:8px; padding:2px 8px; background:var(--stock-ready); color:#fff;
+    font-family:'Chakra Petch'; font-size:0.6rem; letter-spacing:0.05em; text-transform:uppercase; vertical-align:middle;
+    border-radius:2px;
+  }
   .r-price{ font-family:'Chakra Petch'; font-weight:600; color:var(--gold); font-size:1.05rem; }
   .r-stock{ display:flex; align-items:center; gap:8px; font-size:0.82rem; font-family:'Chakra Petch'; text-transform:uppercase; letter-spacing:0.05em; }
   .dot{ width:8px; height:8px; border-radius:50%; }
@@ -270,12 +333,13 @@
   .promo-strip b{ color:var(--off); font-family:'Oswald'; text-transform:uppercase; }
 
   /* ---------- skin inventory grid ---------- */
-  .skin-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
-  .skin-card{ background:var(--bg-panel); padding:28px 26px; display:flex; flex-direction:column; gap:14px; transition:background .2s; }
-  .skin-card:hover{ background:var(--bg-panel-2); }
+  .skin-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); perspective:900px; }
+  .skin-card{ background:var(--bg-panel); padding:28px 26px; display:flex; flex-direction:column; gap:14px; transition:background .2s, transform .2s, box-shadow .2s; }
+  .skin-card:hover{ background:var(--bg-panel-2); transform:translateY(-3px); box-shadow:0 10px 24px rgba(0,0,0,0.08); z-index:1; position:relative; }
   .skin-card .sk-top{ display:flex; align-items:center; justify-content:space-between; }
   .skin-card .sk-idx{ font-family:'Chakra Petch'; font-size:0.72rem; color:var(--off-dim); letter-spacing:0.1em; }
   .skin-card .sk-name{ font-family:'Oswald'; font-weight:600; font-size:1.1rem; color:var(--off); }
+  .sk-nudge{ font-family:'Chakra Petch'; font-size:0.72rem; color:var(--gold); line-height:1.4; margin-top:-6px; }
   .skin-card .sk-price{ font-family:'Chakra Petch'; font-weight:600; color:var(--gold); font-size:1rem; }
   .skin-card .sk-stock{ display:flex; align-items:center; gap:8px; font-size:0.78rem; font-family:'Chakra Petch'; text-transform:uppercase; letter-spacing:0.05em; color:var(--off-dim); }
   .skin-card .sk-order{
@@ -314,7 +378,8 @@
 
   /* ---------- security ---------- */
   .security-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
-  .security-card{ background:var(--bg-panel); padding:28px 24px; }
+  .security-card{ background:var(--bg-panel); padding:28px 24px; transition:transform .2s, box-shadow .2s; }
+  .security-card:hover{ transform:translateY(-3px); box-shadow:0 10px 24px rgba(0,0,0,0.08); }
   .security-card .sec-icon{ font-size:1.6rem; margin-bottom:14px; }
   .security-card h4{ font-family:'Oswald'; font-weight:600; font-size:1rem; text-transform:uppercase; color:var(--off); margin-bottom:10px; }
   .security-card p{ font-size:0.9rem; color:var(--off-dim); line-height:1.55; }
@@ -334,7 +399,7 @@
   .faq-item.open .faq-a{ max-height:300px; }
 
   /* ---------- payment methods ---------- */
-  .payment-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .payment-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); perspective:900px; }
   .payment-card{
     background:var(--bg-panel); padding:26px 16px 20px; display:flex; flex-direction:column; align-items:center; gap:12px;
     text-align:center; transition:background .2s, transform .2s;
@@ -472,6 +537,7 @@
 <div class="logo-bg-overlay"></div>
 <div class="noise-layer"></div>
 <div class="grid-layer"></div>
+<div class="ambient-orbs"><span></span><span></span><span></span></div>
 
 <div class="topbar">
   <div class="brand">
@@ -495,6 +561,11 @@
   <div class="hero-kicker"><span class="blink"></span> Base Status: Online — Ready to Deploy</div>
   <h1>Strengthen Your<br><span class="accent">Last Shelter Survival</span><br>Base, Hassle-Free.</h1>
   <p class="hero-sub">DnA Onion Farm handles farm base, farm manager, skins, pendants, and pilot builds. Every order is handled by experienced operators, with transparent pricing and real-time stock updates.</p>
+  <a href="#services" class="price-anchor">
+    <span class="price-anchor-dot"></span>
+    Plans start at just <b>$3</b> — see what fits your budget
+    <span class="price-anchor-arrow">→</span>
+  </a>
   <div class="hero-actions">
     <a class="btn-primary" href="https://wa.me/6287885931938" target="_blank" rel="noopener">Order via WhatsApp →</a>
     <a class="btn-ghost" href="#services">View Price & Stock</a>
@@ -527,14 +598,14 @@
     </div>
 
     <div class="roster-row">
-      <div class="r-name"><span class="n">Farm Manager</span><span class="d">Farm management service</span></div>
+      <div class="r-name"><span class="n">Farm Manager <span class="value-tag">Best Value</span></span><span class="d">Farm management service</span></div>
       <div class="r-price" data-pid="farm-manager" data-field="price">$3.5</div>
       <div class="r-stock" data-pid="farm-manager" data-field="stock"><span class="dot ready"></span><span class="stock-text">Ready</span></div>
       <div class="order-link" onclick="openOrderModal('Farm Manager')">Order</div>
     </div>
 
     <div class="roster-row">
-      <div class="r-name"><span class="n">DD Tile</span><span class="d">DD pendant / tile</span></div>
+      <div class="r-name"><span class="n">DD Tile <span class="value-tag">Cheapest</span></span><span class="d">DD pendant / tile</span></div>
       <div class="r-price" data-pid="dd-tile" data-field="price">$3</div>
       <div class="r-stock" data-pid="dd-tile" data-field="stock"><span class="dot ready"></span><span class="stock-text">Ready</span></div>
       <div class="order-link" onclick="openOrderModal('DD Tile')">Order</div>
@@ -576,25 +647,27 @@
   <div class="section-head">
     <span class="eyebrow">Skin Inventory</span>
     <h2>Skin Collection</h2>
-    <p>Full skin & accessory catalog for your base. Ask via WhatsApp for the latest stock and pricing on any item below.</p>
+    <p>Full skin & accessory catalog for your base — plenty of entry-level options starting under $60, up to premium sets. Ask via WhatsApp for the latest stock and pricing on any item below.</p>
   </div>
 
   <div class="skin-grid">
     <div class="skin-card">
       <div class="sk-top"><span class="sk-idx">01</span><span class="sk-price" data-pid="skin-base" data-field="price">Start from $55-$290</span></div>
-      <div class="sk-name">Skin Base</div>
+      <div class="sk-name">Skin Base <span class="value-tag">Entry Level</span></div>
       <div class="sk-stock" data-pid="skin-base" data-field="stock"><span class="dot limited"></span><span class="stock-text">Contact for Availability</span></div>
       <div class="sk-order" onclick="openOrderModal('Skin Base')">Order</div>
     </div>
     <div class="skin-card">
       <div class="sk-top"><span class="sk-idx">02</span><span class="sk-price" data-pid="skin-set" data-field="price">$550</span></div>
       <div class="sk-name">Skin Set</div>
+      <div class="sk-nudge">Premium full set — payment plans available, just ask</div>
       <div class="sk-stock" data-pid="skin-set" data-field="stock"><span class="dot limited"></span><span class="stock-text">Contact for Availability</span></div>
       <div class="sk-order" onclick="openOrderModal('Skin Set')">Order</div>
     </div>
     <div class="skin-card">
       <div class="sk-top"><span class="sk-idx">03</span><span class="sk-price" data-pid="wings" data-field="price">$1350</span></div>
       <div class="sk-name">Wings</div>
+      <div class="sk-nudge">Our rarest item — message us, bundle pricing may apply</div>
       <div class="sk-stock" data-pid="wings" data-field="stock"><span class="dot limited"></span><span class="stock-text">Contact for Availability</span></div>
       <div class="sk-order" onclick="openOrderModal('Wings')">Order</div>
     </div>
@@ -945,6 +1018,72 @@
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape') closeOrderModal();
   });
+
+  // Scroll-reveal: fade+rise sections into view as the user scrolls
+  (function(){
+    var revealEls = document.querySelectorAll('.section-head, .roster, .skin-grid, .flow, .security-grid, .payment-grid, .faq-list, .channel-grid');
+    revealEls.forEach(function(el){ el.classList.add('reveal-init'); });
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting) {
+            entry.target.classList.add('reveal-in');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach(function(el){ io.observe(el); });
+    } else {
+      revealEls.forEach(function(el){ el.classList.add('reveal-in'); });
+    }
+  })();
+
+  // Count-up animation for hero stat numbers
+  (function(){
+    var nums = document.querySelectorAll('.hero-stats .num');
+    if (!nums.length) return;
+    function animateNum(el){
+      var raw = el.textContent.trim();
+      var match = raw.match(/^(\d+)(.*)$/);
+      if (!match) return;
+      var target = parseInt(match[1], 10);
+      var suffix = match[2];
+      var start = performance.now();
+      var duration = 1100;
+      function step(now){
+        var p = Math.min(1, (now - start) / duration);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(eased * target) + suffix;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+    if ('IntersectionObserver' in window) {
+      var io2 = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting) { animateNum(entry.target); io2.unobserve(entry.target); }
+        });
+      }, { threshold: 0.5 });
+      nums.forEach(function(el){ io2.observe(el); });
+    }
+  })();
+
+  // Subtle 3D tilt-on-hover for skin & payment cards (desktop only, cheap)
+  (function(){
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      document.querySelectorAll('.skin-card, .payment-card').forEach(function(card){
+        card.style.transformStyle = 'preserve-3d';
+        card.addEventListener('mousemove', function(e){
+          var r = card.getBoundingClientRect();
+          var x = (e.clientX - r.left) / r.width - 0.5;
+          var y = (e.clientY - r.top) / r.height - 0.5;
+          card.style.transform = 'translateY(-3px) rotateX(' + (y * -6) + 'deg) rotateY(' + (x * 6) + 'deg)';
+        });
+        card.addEventListener('mouseleave', function(){ card.style.transform = ''; });
+      });
+    }
+  })();
+
   // Copy-to-clipboard channels (Discord / WeChat) inside the modal
   document.querySelectorAll('.order-modal-channels .oc-item[data-copy]').forEach(function(item){
     item.addEventListener('click', function(){
